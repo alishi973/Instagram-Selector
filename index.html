@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/style.css" rel="stylesheet">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div class="autocomplete" id="selector">
+            <input type="text" name="myCountry" placeholder="Country">
+        </div>
+        <script>
+            const FinalInput = document.getElementById("selector").getElementsByTagName("input")[0]
+            const createItem = (data) => {
+                console.log(data)
+                const searchItems = document.createElement("div")
+                // searchItems.innerText = data
+                //Create Image
+                const image = document.createElement("img");
+                image.src = data.img;
+
+                //Create UserName
+                const text = document.createElement("p")
+                text.innerText = data.name;
+
+                //Create UserId
+                const username = document.createElement("h4")
+                username.innerText = data.username
+
+                /* //Create SelectOption
+                const option = document.createElement("option")
+                option.nodeType = "hidden"
+                option.value = "Test" */
+
+
+                searchItems.addEventListener("click", function (e) {
+                    /*insert the value for the autocomplete text field and Close List*/
+                    FinalInput.value = data.username;
+                    closeList(wrapperItems)
+                })
+
+                //Combine UserName And Name Together
+                const div = document.createElement("div");
+                searchItems.appendChild(image)
+
+                div.appendChild(username)
+                div.appendChild(text)
+
+                //Combine All
+                searchItems.appendChild(div)
+                // searchItems.appendChild(option)
+
+                return searchItems;
+            }
+
+            //Wrapper Of Items
+            const wrapperItems = document.createElement("div")
+            wrapperItems.classList = "autocomplete-items";
+
+            const req = new XMLHttpRequest();
+            req.addEventListener("load", ({ target: { response } }) => {
+                response = JSON.parse(response).graphql.user
+                wrapperItems.appendChild(createItem({ img: response.profile_pic_url, name: response.full_name, username: response.username }))
+            })
+
+
+
+            document.getElementById("selector").getElementsByTagName("input")[0].addEventListener("keyup", function (e) {
+                req.abort()
+                closeList(wrapperItems)
+                req.open("get", `http://www.instagram.com/${this.value}/?__a=1`)
+                req.send()
+            })
+
+            document.getElementById("selector").appendChild(wrapperItems)
+
+            const closeList = (node) => node.innerHTML = "";
+
+        </script>
+    </body>
+
+</html>
