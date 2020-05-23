@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="/style.css" rel="stylesheet">
+        <link href="./style.css" rel="stylesheet">
         <title>Document</title>
     </head>
 
@@ -71,7 +71,7 @@
             document.getElementById("selector").getElementsByTagName("input")[0].addEventListener("keyup", function (e) {
                 req.abort()
                 closeList(wrapperItems)
-                req.open("get", `http://www.instagram.com/${this.value}/?__a=1`)
+                req.open("get", `https://www.instagram.com/${this.value}/?__a=1`)
                 req.send()
             })
 
